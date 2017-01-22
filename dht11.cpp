@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     time_t timestamp;
     struct tm *tm_pointer;
 
-    std::ostringstream out;
+    ostringstream *out = nullptr;
 
     const int *results;
 
@@ -53,12 +53,14 @@ int main(int argc, char *argv[]) {
             il.clear();
             time(&timestamp);
             tm_pointer = localtime(&timestamp);
-            out.str(string());
-            out<<dow[tm_pointer->tm_wday]<< " "<<tm_pointer->tm_mday<<" "<<moy[tm_pointer->tm_mon]<<" "<<setfill('0')<<setw(2)<<tm_pointer->tm_hour<<":"<<setfill('0')<<setw(2)<<tm_pointer->tm_min;
-            il.toLine1(out.str().c_str());
-            out.str(string());
-            out<<"T:"<<results[2]<<", H:"<<results[0]<<"%";
-            il.toLine2(out.str().c_str());
+            out = new ostringstream();
+            *out<<dow[tm_pointer->tm_wday]<< " "<<tm_pointer->tm_mday<<" "<<moy[tm_pointer->tm_mon]<<" "<<setfill('0')<<setw(2)<<tm_pointer->tm_hour<<":"<<setfill('0')<<setw(2)<<tm_pointer->tm_min;
+            il.toLine1((*out).str().c_str());
+            delete out;
+            out = new ostringstream();
+            *out<<"T:"<<results[2]<<", H:"<<results[0]<<"%";
+            il.toLine2((*out).str().c_str());
+            delete out;
         } catch (Dht11::DataNotGood e) {
             sleep(3);
             continue;
