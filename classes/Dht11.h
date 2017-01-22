@@ -17,7 +17,7 @@ public:
 
     Dht11(int dhtPin) : dhtPin(dhtPin) {
         if (wiringPiSetup() == -1)
-            throw exception();
+            throw std::exception();
     };
 
     const int *readDatas();
