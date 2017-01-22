@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
             il.toLine1((*out).str().c_str());
             delete out;
             out = new ostringstream();
-            *out<<"T:"<<results[2]<<", H:"<<results[0]<<"%";
+            *out<<"T:"<<results[2]<<"*C, H:"<<results[0]<<"%";
             il.toLine2((*out).str().c_str());
             delete out;
         } catch (Dht11::DataNotGood e) {
