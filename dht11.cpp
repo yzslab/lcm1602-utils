@@ -38,7 +38,7 @@ const char *moy[] = {
 
 int main(int argc, char *argv[]) {
     I2CLcd1602 il("/dev/i2c-1", 0x26);
-    Dht11 dht11(7);
+    Dht11 dht11(4);
     time_t timestamp;
     struct tm *tm_pointer;
 
