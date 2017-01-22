@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <time.h>
 #include <unistd.h>
@@ -12,28 +13,28 @@
 #define CYCLE 30
 
 const char *dow[] = {
-        "SUN",
-        "MON",
-        "TUE",
-        "WED",
-        "THU",
-        "FRI",
-        "SAT"
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
 };
 
 const char *moy[] = {
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC"
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
 };
 
 int main(int argc, char *argv[]) {
@@ -53,7 +54,7 @@ int main(int argc, char *argv[]) {
             time(&timestamp);
             tm_pointer = localtime(&timestamp);
             out.str(string());
-            out<<dow[tm_pointer->tm_wday]<< " "<<tm_pointer->tm_mday<<" "<<moy[tm_pointer->tm_mon]<<" "<<tm_pointer->tm_hour<<":"<<tm_pointer->tm_min;
+            out<<dow[tm_pointer->tm_wday]<< " "<<tm_pointer->tm_mday<<" "<<moy[tm_pointer->tm_mon]<<" "<<setfill('0')<<setw(2)<<tm_pointer->tm_hour<<":"<<setfill('0')<<setw(2)<<tm_pointer->tm_min;
             il.toLine1(out.str().c_str());
             out.str(string());
             out<<"T:"<<results[2]<<", H:"<<results[0]<<"%";
