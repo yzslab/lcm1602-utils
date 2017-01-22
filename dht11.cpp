@@ -52,9 +52,11 @@ int main(int argc, char *argv[]) {
             il.clear();
             time(&timestamp);
             tm_pointer = gmtime(&timestamp);
+            out.str("");
             out.clear();
             out<<dow[tm_pointer->tm_wday]<< " "<<tm_pointer->tm_mday<<" "<<moy[tm_pointer->tm_mon]<<" "<<tm_pointer->tm_hour<<":"<<tm_pointer->tm_min;
             il.toLine1(out.str().c_str());
+            out.str("");
             out.clear();
             out<<"T:"<<results[2]<<", H:"<<results[0]<<"%";
             il.toLine2(out.str().c_str());
@@ -62,6 +64,7 @@ int main(int argc, char *argv[]) {
             sleep(3);
             continue;
         }
+        sleep(CYCLE);
     }
 
     return 0;
