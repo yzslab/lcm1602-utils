@@ -52,12 +52,10 @@ int main(int argc, char *argv[]) {
             il.clear();
             time(&timestamp);
             tm_pointer = gmtime(&timestamp);
-            out.str("");
-            out.clear();
+            out.str(string());
             out<<dow[tm_pointer->tm_wday]<< " "<<tm_pointer->tm_mday<<" "<<moy[tm_pointer->tm_mon]<<" "<<tm_pointer->tm_hour<<":"<<tm_pointer->tm_min;
             il.toLine1(out.str().c_str());
-            out.str("");
-            out.clear();
+            out.str(string());
             out<<"T:"<<results[2]<<", H:"<<results[0]<<"%";
             il.toLine2(out.str().c_str());
         } catch (Dht11::DataNotGood e) {
