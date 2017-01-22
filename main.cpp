@@ -46,8 +46,9 @@ static const char *unitToString[] = {
 
 static const char * toHumanReadAble(long long num, double &result, const char * &ptr);
 
-int main() {
-    daemon(0, 0);
+int main(int argc, char *argv[]) {
+    if (argc > 1)
+        daemon(0, 0);
     I2CLcd1602 il("/dev/i2c-1", 0x27);
     TrafficMonitor tm(DEV_FILE_PATH, get_dev_details);
     double tmp;
@@ -141,22 +142,30 @@ bool get_dev_details() {
 
     ssize_t readLen;
 
-    char buffer[4], big_buffer[256], *buffer_pointer = buffer;
+    char buffer[4], big_buffer[256], *buffer_pointer = buffer, *pointer;
 
     size_t buffer_size = 4;
 
     bool header_end = false;
 
+    int i;
+
     while ((readLen = read(fd, buffer_pointer, buffer_size)) > 0) {
+        /*
+        for (i = 0, pointer = buffer_pointer; i < readLen; ++pointer, ++i)
+            putc(*pointer, stdout);
+        fflush(stdout);
+        */
         if (!header_end) {
-            if (strncmp("\r\n\r\n", buffer_pointer, 4))
-                continue;
-            header_end = true;
-            buffer_pointer = big_buffer;
-            buffer_size = 256;
+            if (strncmp("\r\n\r\n", buffer_pointer, 4) == 0) {
+                header_end = true;
+                buffer_pointer = big_buffer;
+                buffer_size = 256;
+            }
+            continue;
         }
 
-        write(fd_local, buffer, readLen);
+        write(fd_local, buffer_pointer, readLen);
     }
 
     close(fd);
