@@ -4,14 +4,19 @@
 
 #include "TrafficMonitor.h"
 
-TrafficMonitor::TrafficMonitor(string devFilePath) : devFileIstream(devFilePath) {
+TrafficMonitor::TrafficMonitor(string devFilePath, bool (*getDataHook)()) : devFileIstream(devFilePath), getDataHook(getDataHook) {
 }
 
-void TrafficMonitor::update() {
+bool TrafficMonitor::update() {
     hasDatas = true;
+    if (!getDataHook())
+        return false;
     recordPreDatas();
     sleep(CYCLE_TIME);
+    if (!getDataHook())
+        return false;
     recordPostDatas();
+    return true;
 };
 
 void TrafficMonitor::recordDatas(MAP_TYPE &which) {

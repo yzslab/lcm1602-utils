@@ -34,9 +34,9 @@ public:
     class DevNotFound {};
     class NotInitalUpdated {};
 
-    TrafficMonitor(string devFilePath);
+    TrafficMonitor(string devFilePath, bool (*getDataHook)());
 
-    void update();
+    bool update();
 
     MAP_TYPE get();
     MAP_TYPE get(string dev);
@@ -46,6 +46,8 @@ private:
     ifstream devFileIstream;
     MAP_TYPE preDatas;
     MAP_TYPE postDatas;
+
+    bool (*getDataHook)();
 
     void recordDatas(MAP_TYPE &which);
     void recordPreDatas() { recordDatas(preDatas); }
