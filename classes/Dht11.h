@@ -15,7 +15,10 @@ class Dht11 {
 public:
     class DataNotGood : public std::exception {};
 
-    Dht11(int dhtPin) : dhtPin(dhtPin) {};
+    Dht11(int dhtPin) : dhtPin(dhtPin) {
+        if (wiringPiSetup() == -1)
+            throw exception();
+    };
 
     const int *readDatas();
 
