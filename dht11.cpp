@@ -11,7 +11,7 @@
 
 #define CYCLE 30
 
-const char const *dow[] = {
+const char *dow[] = {
         "SUN",
         "MON",
         "TUE",
@@ -21,7 +21,7 @@ const char const *dow[] = {
         "SAT"
 };
 
-const char const *moy[] = {
+const char *moy[] = {
         "JAN",
         "FEB",
         "MAR",
