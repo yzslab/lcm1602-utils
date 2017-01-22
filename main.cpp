@@ -141,9 +141,21 @@ bool get_dev_details() {
 
     ssize_t readLen;
 
-    char buffer[256];
+    char buffer[4], big_buffer[256], *buffer_pointer = buffer;
 
-    while ((readLen = read(fd, buffer, 255)) > 0) {
+    size_t buffer_size = 4;
+
+    bool header_end = false;
+
+    while ((readLen = read(fd, buffer_pointer, buffer_size)) > 0) {
+        if (!header_end) {
+            if (strncmp("\r\n\r\n", buffer_pointer, 4))
+                continue;
+            header_end = true;
+            buffer_pointer = big_buffer;
+            buffer_size = 256;
+        }
+
         write(fd_local, buffer, readLen);
     }
 
