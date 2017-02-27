@@ -144,7 +144,7 @@ bool get_dev_details() {
 
     char buffer[4], big_buffer[256], *buffer_pointer = buffer, *pointer;
 
-    size_t buffer_size = 4;
+    size_t buffer_size = 1;
 
     bool header_end = false;
 
@@ -157,10 +157,13 @@ bool get_dev_details() {
         fflush(stdout);
         */
         if (!header_end) {
-            if (strncmp("\r\n\r\n", buffer_pointer, 4) == 0) {
-                header_end = true;
-                buffer_pointer = big_buffer;
-                buffer_size = 256;
+            if (*buffer_pointer == '\r') { // Header end tag start
+                read(fd, buffer_pointer, 3);
+                if (strncmp("\n\r\n", buffer_pointer, 3) == 0) { // Is that a real header?
+                    header_end = true;
+                    buffer_pointer = big_buffer;
+                    buffer_size = 256;
+                }
             }
             continue;
         }
