@@ -14,7 +14,9 @@ using namespace std;
 
 class I2CLcd1602 {
 public:
-    I2CLcd1602(const char *devPath, int addr);
+    I2CLcd1602();
+    I2CLcd1602(const char *devPath, unsigned char addr);
+    I2CLcd1602(const char *I2CBusID, const char *I2CAddress);
     void clear();
     void toLine1(const char *str);
     void toLine2(const char *str);

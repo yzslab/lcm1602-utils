@@ -20,7 +20,7 @@ using namespace std;
 #define FIELD_TYPE TrafficMonitor::TwoField<long long>
 #define MAP_TYPE unordered_map<string, FIELD_TYPE>
 
-#define CYCLE_TIME 1
+#define CYCLE_TIME 2
 
 class TrafficMonitor {
 public:
@@ -42,8 +42,9 @@ public:
     MAP_TYPE get(string dev);
 
 private:
+    string devFilePath;
     bool hasDatas = false;
-    ifstream devFileIstream;
+    // ifstream devFileIstream;
     MAP_TYPE preDatas;
     MAP_TYPE postDatas;
 
@@ -52,10 +53,12 @@ private:
     void recordDatas(MAP_TYPE &which);
     void recordPreDatas() { recordDatas(preDatas); }
     void recordPostDatas() { recordDatas(postDatas); }
+    /*
     void resetFileIStream() {
         devFileIstream.clear();
         devFileIstream.seekg(ios_base::beg);
     }
+     */
 };
 
 

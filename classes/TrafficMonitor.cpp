@@ -4,15 +4,20 @@
 
 #include "TrafficMonitor.h"
 
-TrafficMonitor::TrafficMonitor(string devFilePath, bool (*getDataHook)()) : devFileIstream(devFilePath), getDataHook(getDataHook) {
+TrafficMonitor::TrafficMonitor(string devFilePath, bool (*getDataHook)()) {
+    this->devFilePath = devFilePath;
+    this->getDataHook = getDataHook;
 }
 
 bool TrafficMonitor::update() {
     hasDatas = true;
     if (!getDataHook())
         return false;
+    printf("Record pre data.\n");
     recordPreDatas();
+    printf("Wait %ds.\n", CYCLE_TIME);
     sleep(CYCLE_TIME);
+    printf("Record post data.\n");
     if (!getDataHook())
         return false;
     recordPostDatas();
@@ -20,7 +25,7 @@ bool TrafficMonitor::update() {
 };
 
 void TrafficMonitor::recordDatas(MAP_TYPE &which) {
-    resetFileIStream();
+    ifstream devFileIstream(devFilePath);
     which.clear();
 
     int line = 0, i;
@@ -49,10 +54,12 @@ void TrafficMonitor::recordDatas(MAP_TYPE &which) {
                 }
                 transmit = stoll(tmp.substr(charPos1, charPos2 - charPos1));
 
-                which.insert(pair<string, FIELD_TYPE>(devName, TwoField<long long>(receive, transmit)));
+                which.insert(pair<string, FIELD_TYPE >(devName, TwoField<long long>(receive, transmit)));
             }
         }
     }
+
+    devFileIstream.close();
 }
 
 MAP_TYPE TrafficMonitor::get() {
